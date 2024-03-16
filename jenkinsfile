@@ -1,6 +1,6 @@
 pipeline {  
   environment {
-      registry = "zakariaachaghour/tp5devops"
+      registry = "abalilziad/tp4devops"
       registryCredential = 'zakariaachaghour_DOCKER_HUB'
       dockerImage = ''
   }
