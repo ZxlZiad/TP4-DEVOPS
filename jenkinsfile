@@ -9,12 +9,6 @@ pipeline {
     }
     agent any
     stages {
-        stage('Cloning Git') {
-            steps {
-                // Clones the main branch by default
-                git url: 'https://github.com/ZxlZiad/TP4-DEVOPS.git'
-            }
-        }
         stage('Building image') {
             steps {
                 script {
