@@ -3,7 +3,7 @@ pipeline {
         // Define your Docker Hub repository
         registry = "abalilziad/tp4devops"
         // The ID of the Docker Hub credentials stored in Jenkins
-        registryCredential = 'abalilziad'
+        registryCredential = 'abalil-ziad'
         // Dynamically defined Docker image name
         dockerImage = ''
     }
