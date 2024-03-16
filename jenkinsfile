@@ -1,46 +1,47 @@
-pipeline {
-environment {
-registry = "anunnakish/webapptp4"
-registryCredential = 'anunnakish'
-dockerImage = ''
-}
-agent any
-stages {
-stage('Cloning Git') {
-steps {
-git 'https://github.com/zakariamanssouri/TP4-Devops'
-}
-}
-stage('Building image') {
-steps{
-script {
-dockerImage = docker.build registry + ":$BUILD_NUMBER"
-}
-}
-}
-stage('Test image') {
-steps{
-script {
+pipeline {  
+  environment {
+      registry = "zakariaachaghour/tp5devops"
+      registryCredential = 'zakariaachaghour_DOCKER_HUB'
+      dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+          git 'https://github.com/zakaria-achaghour/tp5Devops.git'
+      }
+    }
+    stage('Building image') {
+      steps{
+          script {
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          }
+      }
+    }
+    stage('Test image') {
+      steps{
+        script {
 
-echo "Tests passed"
-}
-}
-}
-stage('Publish Image') {
-steps{
-script {
-docker.withRegistry( '', registryCredential ) {
-dockerImage.push()
-}
-}
-}
-}
-stage('Deploy image') {
-steps{
-sh "docker run -d -p 8080:80 $registry:$BUILD_NUMBER"
-}
-}
+          echo "Tests passed"
+        }
+      }
+    }
+    stage('Publish Image') {
+      steps{
+          script {
+              docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+              }
+          }
+      }
+    }
 
-
-}
+    stage('Deploy Image') {
+      steps{
+          script {
+              sh "docker run -d $registry:$BUILD_NUMBER"
+          }
+      }
+    }
+  }
 }
