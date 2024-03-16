@@ -1,7 +1,7 @@
 pipeline {  
   environment {
       registry = "abalilziad/tp4devops"
-      registryCredential = 'zakariaachaghour_DOCKER_HUB'
+      registryCredential = 'abalil-ziad'
       dockerImage = ''
   }
   agent any
