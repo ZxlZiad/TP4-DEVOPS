@@ -4,7 +4,7 @@ pipeline {
         registryCredential = 'abalil-ziad' // Ensure this is the ID of the credentials in Jenkins
         dockerImage = ''
     }
-    agent any
+    agent ziad
     stages {
         stage('Cloning Git') {
             steps {
