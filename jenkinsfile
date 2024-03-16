@@ -1,47 +1,45 @@
 pipeline {  
-  environment {
-      registry = "abalilziad/tp4devops"
-      registryCredential = 'abalil-ziad'
-      dockerImage = ''
-  }
-  agent any
-  stages {
-    stage('Cloning Git') {
-      steps {
-          git 'https://github.com/ZxlZiad/TP4-DEVOPS.git'
-      }
+    environment {
+        registry = "abalilziad/tp4devops"
+        registryCredential = 'abalil-ziad' // Ensure this is the ID of the credentials in Jenkins
+        dockerImage = ''
     }
-    stage('Building image') {
-      steps{
-          script {
-              dockerImage = docker.build registry + ":$BUILD_NUMBER"
-          }
-      }
-    }
-    stage('Test image') {
-      steps{
-        script {
-
-          echo "Tests passed"
+    agent any
+    stages {
+        stage('Cloning Git') {
+            steps {
+                git 'https://github.com/ZxlZiad/TP4-DEVOPS.git'
+            }
         }
-      }
+        stage('Building image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registry}:${BUILD_NUMBER}")
+                }
+            }
+        }
+        stage('Test image') {
+            steps {
+                script {
+                    echo "Tests passed"
+                }
+            }
+        }
+        stage('Publish Image') {
+            steps {
+                script {
+                    docker.withRegistry('', "${registryCredential}") {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Deploy Image') {
+            steps {
+                script {
+                    sh "docker run -d ${registry}:${BUILD_NUMBER}"
+                }
+            }
+        }
     }
-    stage('Publish Image') {
-      steps{
-          script {
-              docker.withRegistry( '', registryCredential ) {
-              dockerImage.push()
-              }
-          }
-      }
-    }
-
-    stage('Deploy Image') {
-      steps{
-          script {
-              sh "docker run -d $registry:$BUILD_NUMBER"
-          }
-      }
-    }
-  }
 }
